@@ -1,0 +1,27 @@
+{
+  "scriptFile": "__init__.py",
+  "bindings": [
+    {
+      "name": "every5Minute",
+      "type": "timerTrigger",
+      "direction": "in",
+      "schedule": "0 0 */2 * * *"
+    },
+    {
+      "name": "cities",
+      "type": "sql",
+      "direction": "in",
+      "commandText": "SELECT [city_id],[city_name] FROM [weather].[cityList]",
+      "commandType": "Text",
+      "connectionStringSetting": "SqlConnectionString"
+    },
+    {
+      "name": "outputblob",
+      "type": "blob",
+      "dataType": "binary",
+      "path": "samples-workitems/{queueTrigger}-Copy",
+      "connection": "MyStorageConnectionAppSetting",
+      "direction": "out"
+    }
+  ]
+}
