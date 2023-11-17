@@ -6,7 +6,7 @@ import pandas
 
 import azure.functions as func
 
-def main(every5Minute: func.TimerRequest, cities: func.SqlRowList) -> func.HttpResponse:
+def main(every5Minute: func.TimerRequest, cities: func.SqlRowList, outblob: func.Out[bytes]) -> func.HttpResponse:
     logging.info('Python HTTP trigger function processed a request.')
     filename = "cities.txt"
     filesize = 0
@@ -16,8 +16,13 @@ def main(every5Minute: func.TimerRequest, cities: func.SqlRowList) -> func.HttpR
     # product_csv = product_list.to_csv(index=False)
     # datatosend = io.BytesIO(product_csv.encode('utf-8'))
 
+    #we save the file as a utf encoded dataframe for us to save to Azure. 
 
-    print(city_list)
+    output = city_list.to_csv('cities.csv')
+    # output = data_to_loaded_into_storage.to_csv(encoding="utf-8")
+    outblob.set(output)
+
+    # print(city_list)
 
     # get FTP connection details from app settings
     # FTP_HOST = os.environ['FTP_HOST']
@@ -35,4 +40,15 @@ def main(every5Minute: func.TimerRequest, cities: func.SqlRowList) -> func.HttpR
     # except Exception as e:
     #     logging.error(e)
 
-    logging.info(f"File {filename} uploaded to FTP server. Size: {filesize} bytes")
+    # logging.info(f"File {filename} uploaded to FTP server. Size: {filesize} bytes")
+
+
+# def main(inblob: func.InputStream, outblob: func.Out[bytes]):
+#     #reading in of the json file 
+#     json_data = json.loads(inblob.read())
+#     #lets pretend that the data we are working with is a list filled with dicts
+#     data_to_loaded_into_storage = pd.Dataframe(json_data)
+#     logging.info("saving data back to Azure.")
+#     #we save the file as a utf encoded dataframe for us to save to Azure. 
+#     output = data_to_loaded_into_storage.to_csv(encoding="utf-8")
+#     outblob.set(output)

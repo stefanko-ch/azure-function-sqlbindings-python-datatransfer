@@ -15,13 +15,21 @@
       "commandType": "Text",
       "connectionStringSetting": "SqlConnectionString"
     },
+    // {
+    //   "name": "outputblob",
+    //   "type": "blob",
+    //   "dataType": "binary",
+    //   "path": "openweather/{path}/{filename}",
+    //   "connection": "MyStorageConnectionAppSetting",
+    //   "direction": "out"
+    // },
     {
-      "name": "outputblob",
+      "name": "outblob",
       "type": "blob",
-      "dataType": "binary",
-      "path": "samples-workitems/{queueTrigger}-Copy",
-      "connection": "MyStorageConnectionAppSetting",
-      "direction": "out"
-    }
+      "direction": "out",
+      // "path": "openweather/{path}/{filename}",
+      "path": "openweather/{name}.csv",
+      "connection": "connectionDetails"
+  }
   ]
 }
